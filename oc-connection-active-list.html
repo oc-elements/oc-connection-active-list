@@ -1,0 +1,34 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`oc-connection-active-list`
+Element to display list of active connections for an organisation on the Ordercloud platform
+
+@demo demo/index.html 
+-->
+
+<dom-module id="oc-connection-active-list">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]</h2>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'oc-connection-active-list',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'oc-connection-active-list',
+        },
+      },
+
+    });
+  </script>
+</dom-module>
