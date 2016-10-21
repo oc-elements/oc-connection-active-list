@@ -1,5 +1,14 @@
 <link rel="import" href="../polymer/polymer.html">
 
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../oc-connection-api/oc-connection-api.html">
+<link rel="import" href="../iron-data-table/iron-data-table.html">
+<link rel="import" href="../oc-grid-controls/oc-grid-controls.html">
+<link rel="import" href="../oc-iron-data-table-styles/oc-iron-data-table-styles.html">
+<link rel="import" href="../oc-paginator/mercury-paginator.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../oc-core-utils/oc-api-consumer-behaviour.html">
+
 <!--
 `oc-connection-active-list`
 Element to display list of active connections for an organisation on the Ordercloud platform
@@ -14,20 +23,86 @@ Element to display list of active connections for an organisation on the Ordercl
         display: block;
       }
     </style>
-    <h2>Hello [[prop1]]</h2>
+
+    <oc-connection-api id="connectionApi"></oc-connection-api>
+
+    <oc-grid-controls data="[[ _deliveryAgents ]]" total-count="[[ _totalItems ]]" num-entries="[[ _pageSize ]]">
+      <iron-data-table
+              id="dataTable"
+              current-page="[[ _currentPage ]]"
+              loading="{{ loading }}">
+        <data-table-column name="ID" sort-by="id">
+          <template>[[item.user.profile.cellphoneNumber]]</template>
+        </data-table-column>
+        <data-table-column name="Name" sort-by="name">
+          <template>[[item.user.profile.firstName]] [[item.user.profile.surname]]</template>
+        </data-table-column>
+        <data-table-column name="Fee" sort-by="fee">
+          <template>[[item.user.profile.firstName]] [[item.user.profile.surname]]</template>
+        </data-table-column>
+        <data-table-column name="Orginisation Type" sort-by="orgType">
+          <template>[[item.user.profile.firstName]] [[item.user.profile.surname]]</template>
+        </data-table-column>
+        <data-table-column name="Connection Types" sort-by="connectionType">
+          <template>[[item.user.profile.firstName]] [[item.user.profile.surname]]</template>
+        </data-table-column>
+
+        <data-table-column name="Actions">
+          <template>
+            <div data-option-object$="[[ item ]]" class="actions" >
+              <paper-button id="manage" title="manage"  on-tap="_openCashupModal" raised>Manage</paper-button>
+            </div>
+          </template>
+        </data-table-column>
+      </iron-data-table>
+    </oc-grid-controls>
+
   </template>
 
   <script>
     Polymer({
 
       is: 'oc-connection-active-list',
+      behaviors: [OC.Behaviours.ApiConsumer],
 
       properties: {
-        prop1: {
-          type: String,
-          value: 'oc-connection-active-list',
+        organisationId: Number,
+        loading: {
+          type: Boolean,
+          notify: true
         },
       },
+
+      observers : [
+        'refresh(organisationId)'
+      ],
+
+      refresh : function(){
+
+        if(!this.organisationId) return;
+
+//        Promise.all([this._getStatusses(), this._getAgents()])
+//                .then(function(requests){
+//
+//                  this._deliveryAgents = requests[1].response.results;
+//                  this._totalItems = requests[1].response.count;
+//                  this._pageSize = 10;
+//                  this._currentPage = 1;
+//
+//                  this._deliveryAgentStatuses = requests[0].response.results;
+//                  console.log(this._deliveryAgentStatuses)
+//
+//                }.bind(this))
+//                .catch(this.fire.bind(this, 'delivery-agents-error', 'Failed to load delivery agents'))
+//                .finally(this.set.bind(this, 'loading', false));
+      },
+
+      _actionHandler: function(e) {
+        var extraObj = JSON.parse(Polymer.dom(event).localTarget.parentElement.getAttribute('data-option-object')),
+                action = e.target.getAttribute('id');
+        this.fire(action, extraObj);
+      },
+
 
     });
   </script>
