@@ -4,7 +4,7 @@
   "main": "oc-connection-active-list.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
-    "oc-connection-api": "git://github.com/oc-elementsconnection-api#1.x",
+    "oc-connection-api": "git://github.com/oc-elements/connection-api#1.x",
     "iron-data-table": "1.0.0",
     "oc-iron-data-table-styles": "git://github.com/oc-elements/oc-iron-data-table-styles.git#1.x",
     "oc-paginator": "git://github.com/oc-elements/oc-paginator.git#1.x",
